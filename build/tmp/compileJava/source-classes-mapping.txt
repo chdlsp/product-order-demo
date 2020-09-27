@@ -1,11 +1,11 @@
 net/class101/homework1/Homework1Application.java
  net.class101.homework1.Homework1Application
+net/class101/homework1/domain/repository/ProductInfoRepository.java
+ net.class101.homework1.domain.repository.ProductInfoRepository
+net/class101/homework1/domain/enums/ProductTypeEnum.java
+ net.class101.homework1.domain.enums.ProductTypeEnum
 net/class101/homework1/application/Class101Runner.java
  net.class101.homework1.application.Class101Runner
 net/class101/homework1/domain/entity/ProductInfoEntity.java
  net.class101.homework1.domain.entity.ProductInfoEntity
  net.class101.homework1.domain.entity.ProductInfoEntity$ProductInfoEntityBuilder
-net/class101/homework1/domain/enums/ProductTypeEnum.java
- net.class101.homework1.domain.enums.ProductTypeEnum
-net/class101/homework1/domain/repository/ProductInfoRepository.java
- net.class101.homework1.domain.repository.ProductInfoRepository
