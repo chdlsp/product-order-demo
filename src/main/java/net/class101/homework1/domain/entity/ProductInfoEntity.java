@@ -1,6 +1,7 @@
 package net.class101.homework1.domain.entity;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class ProductInfoEntity {
 
     @Id
