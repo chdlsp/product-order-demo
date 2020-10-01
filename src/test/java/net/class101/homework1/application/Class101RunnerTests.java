@@ -3,6 +3,7 @@ package net.class101.homework1.application;
 import com.sun.tools.javac.util.Assert;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ class Class101RunnerTests {
     private ProductInfoRepository productInfoRepository;
 
     @Test
+    @DisplayName("Runner 실행 후 초기화 데이터 정상확인")
     void findAllFromRepository() {
 
         // given
