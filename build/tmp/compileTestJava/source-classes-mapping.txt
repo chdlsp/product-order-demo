@@ -1,6 +1,0 @@
-net/class101/homework1/Homework1ApplicationTests.java
- net.class101.homework1.Homework1ApplicationTests
-net/class101/homework1/domain/repository/ProductInfoRepositoryTests.java
- net.class101.homework1.domain.repository.ProductInfoRepositoryTests
-net/class101/homework1/application/Class101RunnerTests.java
- net.class101.homework1.application.Class101RunnerTests
