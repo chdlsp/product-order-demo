@@ -7,7 +7,6 @@ import net.class101.homework1.domain.vo.ShoppingCartVO;
 import net.class101.homework1.service.HandleProductInfoService;
 import net.class101.homework1.service.HandleShoppingCartInfoService;
 import net.class101.homework1.service.OrderShoppingCartListService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -103,17 +102,27 @@ public class Class101Runner implements ApplicationRunner {
 
                     if (productNumber.equals(" ")) {
                         // 주문 완료
+
+                        BigDecimal transferFee = BigDecimal.valueOf(5000); // 배송비
+                        BigDecimal orderAmount = BigDecimal.ZERO; // 주문금액
+
+                        System.out.println("주문 내역: ");
                         System.out.println("---------------------------------------");
                         for (ShoppingCartVO shoppingCartVO : shoppingCartList) {
                             System.out.printf("%s - %8d개 \n"
                                     , shoppingCartVO.getProductName(), shoppingCartVO.getOrderCount());
+
+                            // TODO: 결제금액 계산 구현 필요
+                            if(orderShoppingCartListService.checkOrderPossible(shoppingCartVO)) {
+
+                            }
                         }
+                        System.out.println("---------------------------------------");
 
                         break;
 
                     } else {
                         // 주문 계속
-                        log.info("productNumber : " + productNumber);
 
                         // productNumber 정보 가져오기
                         ProductInfoEntity productInfoEntityByProductNumber =

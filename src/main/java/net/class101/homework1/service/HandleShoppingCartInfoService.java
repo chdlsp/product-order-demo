@@ -22,8 +22,11 @@ public class HandleShoppingCartInfoService {
         }
     }
 
+    // 클래스인 경우 수량 검증 처리
     public boolean checkClassOrderCount(ProductInfoEntity productInfoEntityByProductNumber, int intOrderCount) {
-        return productInfoEntityByProductNumber.getProductTypeEnum().equals(ProductTypeEnum.KLASS)
-                && intOrderCount == 1;
+
+        if(productInfoEntityByProductNumber.getProductTypeEnum().equals(ProductTypeEnum.KLASS)) {
+            return intOrderCount == 1;
+        } else return true;
     }
 }
