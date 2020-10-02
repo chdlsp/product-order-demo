@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
+import net.class101.homework1.domain.vo.ShoppingCartVO;
 import net.class101.homework1.service.ProductInfoHandleService;
+import org.hibernate.WrongClassException;
 import org.hibernate.engine.jdbc.spi.SchemaNameResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -20,11 +22,15 @@ import java.util.Scanner;
 @Slf4j
 public class Class101Runner implements ApplicationRunner {
 
-    @Autowired
-    private ProductInfoHandleService productInfoHandleService;
+    private final ProductInfoHandleService productInfoHandleService;
+
+    public Class101Runner(ProductInfoHandleService productInfoHandleService) {
+        this.productInfoHandleService = productInfoHandleService;
+    }
 
     @Override
     public void run(ApplicationArguments args) {
+
         log.info("==========================");
         log.info("Class101Runner Started ...");
         log.info("==========================");
@@ -60,11 +66,15 @@ public class Class101Runner implements ApplicationRunner {
 
         while (true) {
 
-            System.out.print("입력(o[order]: 주문, q[quit]: 종료) \n");
-            next = scanner.next(); // input
+            System.out.print("입력(o[order]: 주문, q[quit]: 종료) : ");
+            next = scanner.nextLine(); // input
 
             // order - 상품리스트 출력
             if (next.equals("o")) {
+
+                String productNumber = "";
+                String orderCount = "";
+
                 for (int i = 0; i < productInfoEntities.size(); i++) {
 
                     if (i == 0) {
@@ -78,8 +88,49 @@ public class Class101Runner implements ApplicationRunner {
                             , productInfoEntity.getProductStock().intValue()
                             , productInfoEntity.getProductName());
                 }
+
+                List<ShoppingCartVO> shoppingCartList = new ArrayList<>(); // 장바구니 리스트 초기화
+
+                while (true) {
+
+                    System.out.print("\n상품번호: ");
+                    productNumber = scanner.nextLine();
+
+                    if (productNumber.equals(" ")) {
+                        // 주문 완료
+                        System.out.println("---------------------------------------");
+                        for (ShoppingCartVO shoppingCartVO : shoppingCartList) {
+                            System.out.printf("%s - %8d개 \n"
+                                    , shoppingCartVO.getProductName(), shoppingCartVO.getOrderCount());
+                        }
+
+                        break;
+
+                    } else {
+                        // 주문 계속
+                        log.info("productNumber : " +  productNumber);
+
+                        // productNumber 정보 가져오기
+                        ProductInfoEntity productInfoEntityByProductNumber =
+                                productInfoHandleService.findProductInfoEntityByProductNumber(productNumber);
+
+                        System.out.print("수량: ");
+                        orderCount = scanner.nextLine();
+
+                        ShoppingCartVO shoppingCartVO = ShoppingCartVO.builder()
+                                .productNumber(productNumber)
+                                .productTypeEnum(productInfoEntityByProductNumber.getProductTypeEnum())
+                                .orderCount(Integer.parseInt(orderCount))
+                                .productName(productInfoEntityByProductNumber.getProductName())
+                                .build();
+
+                        shoppingCartList.add(shoppingCartVO);
+                    }
+                }
+
+
             } else if (next.equals("q")) {
-                System.out.printf("고객님의 주문 감사합니다.");
+                System.out.print("고객님의 주문 감사합니다.");
                 break;
             }
         }

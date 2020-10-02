@@ -6,7 +6,6 @@ import net.class101.homework1.domain.enums.ProductTypeEnum;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,8 +22,7 @@ public class ShoppingCartVO {
 
     private String productName;
 
-    private BigDecimal productPrice;
+    private int orderCount;
 
-    private BigDecimal productStock;
-    
+
 }
