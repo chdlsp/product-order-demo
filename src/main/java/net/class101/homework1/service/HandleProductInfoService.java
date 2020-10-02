@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ProductInfoHandleService {
+public class HandleProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
 
-    public ProductInfoHandleService(ProductInfoRepository productInfoRepository) {
+    public HandleProductInfoService(ProductInfoRepository productInfoRepository) {
         this.productInfoRepository = productInfoRepository;
     }
 

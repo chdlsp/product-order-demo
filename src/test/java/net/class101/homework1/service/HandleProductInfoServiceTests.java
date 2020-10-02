@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-class ProductInfoHandleServiceTests {
+class HandleProductInfoServiceTests {
 
     @InjectMocks
-    ProductInfoHandleService productInfoHandleService;
+    HandleProductInfoService handleProductInfoService;
 
     @Mock
     ProductInfoRepository productInfoRepository;
@@ -68,7 +68,7 @@ class ProductInfoHandleServiceTests {
         given(productInfoRepository.save(any())).willReturn(productInfoEntity);
 
         // when
-        List<ProductInfoEntity> productInfoEntities = productInfoHandleService.saveProductInfoEntityList(productInfoEntityList);
+        List<ProductInfoEntity> productInfoEntities = handleProductInfoService.saveProductInfoEntityList(productInfoEntityList);
 
         // then
         assertNotNull(productInfoEntities);

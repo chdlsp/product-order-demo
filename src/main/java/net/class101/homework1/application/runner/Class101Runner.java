@@ -3,11 +3,10 @@ package net.class101.homework1.application.runner;
 import lombok.extern.slf4j.Slf4j;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
-import net.class101.homework1.domain.repository.ProductInfoRepository;
 import net.class101.homework1.domain.vo.ShoppingCartVO;
-import net.class101.homework1.service.ProductInfoHandleService;
-import org.hibernate.WrongClassException;
-import org.hibernate.engine.jdbc.spi.SchemaNameResolver;
+import net.class101.homework1.service.HandleProductInfoService;
+import net.class101.homework1.service.HandleShoppingCartInfoService;
+import net.class101.homework1.service.OrderShoppingCartListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -22,10 +21,16 @@ import java.util.Scanner;
 @Slf4j
 public class Class101Runner implements ApplicationRunner {
 
-    private final ProductInfoHandleService productInfoHandleService;
+    private final HandleProductInfoService handleProductInfoService;
+    private final HandleShoppingCartInfoService handleShoppingCartInfoService;
+    private final OrderShoppingCartListService orderShoppingCartListService;
 
-    public Class101Runner(ProductInfoHandleService productInfoHandleService) {
-        this.productInfoHandleService = productInfoHandleService;
+    public Class101Runner(HandleProductInfoService handleProductInfoService,
+                          HandleShoppingCartInfoService handleShoppingCartInfoService,
+                          OrderShoppingCartListService orderShoppingCartListService) {
+        this.handleProductInfoService = handleProductInfoService;
+        this.handleShoppingCartInfoService = handleShoppingCartInfoService;
+        this.orderShoppingCartListService = orderShoppingCartListService;
     }
 
     @Override
@@ -58,10 +63,10 @@ public class Class101Runner implements ApplicationRunner {
         productInfoEntityList.add(new ProductInfoEntity("74218", ProductTypeEnum.KLASS, "나만의 문방구를 차려요! 그리지영의 타블렛으로 굿즈 만들기", BigDecimal.valueOf(191600), BigDecimal.valueOf(99999)));
         productInfoEntityList.add(new ProductInfoEntity("28448", ProductTypeEnum.KLASS, "당신도 할 수 있다! 베테랑 실무자가 알려주는 모션그래픽의 모든 것", BigDecimal.valueOf(52200), BigDecimal.valueOf(99999)));
 
-        List<ProductInfoEntity> productInfoEntities = productInfoHandleService.saveProductInfoEntityList(productInfoEntityList);
+        // db 저장 처리
+        List<ProductInfoEntity> productInfoEntities = handleProductInfoService.saveProductInfoEntityList(productInfoEntityList);
 
         Scanner scanner = new Scanner(System.in);
-
         String next = "";
 
         while (true) {
@@ -108,26 +113,38 @@ public class Class101Runner implements ApplicationRunner {
 
                     } else {
                         // 주문 계속
-                        log.info("productNumber : " +  productNumber);
+                        log.info("productNumber : " + productNumber);
 
                         // productNumber 정보 가져오기
                         ProductInfoEntity productInfoEntityByProductNumber =
-                                productInfoHandleService.findProductInfoEntityByProductNumber(productNumber);
+                                handleProductInfoService.findProductInfoEntityByProductNumber(productNumber);
+
+                        // 클래스 기존재 여부 확인
+                        handleShoppingCartInfoService.checkClassIsAlreadyExists(shoppingCartList, productInfoEntityByProductNumber);
 
                         System.out.print("수량: ");
                         orderCount = scanner.nextLine();
+                        int intOrderCount = Integer.parseInt(orderCount);
 
-                        ShoppingCartVO shoppingCartVO = ShoppingCartVO.builder()
-                                .productNumber(productNumber)
-                                .productTypeEnum(productInfoEntityByProductNumber.getProductTypeEnum())
-                                .orderCount(Integer.parseInt(orderCount))
-                                .productName(productInfoEntityByProductNumber.getProductName())
-                                .build();
+                        // 클래스 Type 수량을 1개로 입력 여부
+                        boolean checkClassOrderValid =
+                                handleShoppingCartInfoService.checkClassOrderCount(productInfoEntityByProductNumber, intOrderCount);
 
-                        shoppingCartList.add(shoppingCartVO);
+                        if (checkClassOrderValid) {
+                            // 쇼핑카트에 주문내역 적재
+                            ShoppingCartVO shoppingCartVO = ShoppingCartVO.builder()
+                                    .productNumber(productNumber)
+                                    .productTypeEnum(productInfoEntityByProductNumber.getProductTypeEnum())
+                                    .orderCount(intOrderCount)
+                                    .productName(productInfoEntityByProductNumber.getProductName())
+                                    .build();
+                            shoppingCartList.add(shoppingCartVO);
+
+                        } else {
+                            System.out.println("클래스는 1개만 주문할 수 있습니다.");
+                        }
                     }
                 }
-
 
             } else if (next.equals("q")) {
                 System.out.print("고객님의 주문 감사합니다.");
@@ -135,4 +152,6 @@ public class Class101Runner implements ApplicationRunner {
             }
         }
     }
+
+
 }
