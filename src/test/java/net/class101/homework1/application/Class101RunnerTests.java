@@ -1,6 +1,5 @@
 package net.class101.homework1.application;
 
-import com.sun.tools.javac.util.Assert;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +25,7 @@ class Class101RunnerTests {
         List<ProductInfoEntity> productInfoRepositoryAll = productInfoRepository.findAll();
 
         // when
-        Assert.checkNonNull(productInfoRepositoryAll);
+        assertNotNull(productInfoRepositoryAll);
 
         // then
         assertEquals(20, productInfoRepositoryAll.size());

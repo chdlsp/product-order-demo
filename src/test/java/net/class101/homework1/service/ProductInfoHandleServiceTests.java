@@ -1,6 +1,5 @@
 package net.class101.homework1.service;
 
-import com.sun.tools.javac.util.Assert;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
@@ -72,7 +71,7 @@ class ProductInfoHandleServiceTests {
         List<ProductInfoEntity> productInfoEntities = productInfoHandleService.saveProductInfoEntityList(productInfoEntityList);
 
         // then
-        Assert.checkNonNull(productInfoEntities);
+        assertNotNull(productInfoEntities);
         assertEquals(20, productInfoEntities.size());
     }
 }

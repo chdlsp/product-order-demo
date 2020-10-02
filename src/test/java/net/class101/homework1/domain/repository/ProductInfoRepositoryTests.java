@@ -1,6 +1,5 @@
 package net.class101.homework1.domain.repository;
 
-import com.sun.tools.javac.util.Assert;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.then;
 import static sun.nio.cs.Surrogate.is;
 
@@ -42,7 +42,7 @@ class ProductInfoRepositoryTests {
         ProductInfoEntity infoEntity = productInfoRepository.save(productInfoEntity);
 
         // when
-        Assert.checkNonNull(infoEntity.getProductNumber());
+        assertNotNull(infoEntity.getProductNumber());
 
         // then
         then("11111").equals(infoEntity.getProductNumber()); // pk 확인
