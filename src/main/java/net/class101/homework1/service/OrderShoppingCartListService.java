@@ -5,7 +5,6 @@ import net.class101.homework1.domain.enums.ProductTypeEnum;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
 import net.class101.homework1.domain.vo.ShoppingCartVO;
 import net.class101.homework1.exception.SoldOutException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +61,16 @@ public class OrderShoppingCartListService {
                 .build();
 
         productInfoRepository.save(updateProductInfoEntity);
+    }
+
+    // 포함 여부 리턴
+    public String getContainsYn(String containsYn, ShoppingCartVO shoppingCartVO, ProductTypeEnum productType) {
+
+        if (containsYn.equals("N")) {
+            if (shoppingCartVO.getProductTypeEnum().equals(productType)) {
+                containsYn = "Y";
+            }
+        }
+        return containsYn;
     }
 }

@@ -2,6 +2,8 @@ package net.class101.homework1.service;
 
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
+import net.class101.homework1.domain.vo.ShoppingCartVO;
+import net.class101.homework1.exception.SnapshotInfoTooLongException;
 import net.class101.homework1.exception.WrongProductNumberException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,13 @@ public class HandleProductInfoService {
 
         return byProductNumber.get();
 
+    }
+
+    // 장바구니에 담은 금액과 프로덕트 클래스 정보의 가격이 다른 경우
+    public void checkLatestProductPriceInfo(ShoppingCartVO shoppingCartVO, ProductInfoEntity productInfoEntity) {
+        if(!productInfoEntity.getProductPrice().equals(shoppingCartVO.getOrderPrice())) {
+            throw new SnapshotInfoTooLongException("상품 가격 정보가 변경되었습니다. 새로고침 후 다시 이용해 주세요.");
+        }
     }
 
 }
