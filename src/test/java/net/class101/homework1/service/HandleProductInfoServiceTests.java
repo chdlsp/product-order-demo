@@ -3,11 +3,19 @@ package net.class101.homework1.service;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,17 +29,20 @@ import static org.mockito.BDDMockito.given;
 class HandleProductInfoServiceTests {
 
     @InjectMocks
-    HandleProductInfoService handleProductInfoService;
+    private HandleProductInfoService handleProductInfoService;
 
     @Mock
-    ProductInfoRepository productInfoRepository;
-    ProductInfoEntity productInfoEntity;
+    private ProductInfoRepository productInfoRepository;
 
+    @Mock
+    ProductInfoEntity productInfoEntity;
 
     List<ProductInfoEntity> productInfoEntityList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+
+        MockitoAnnotations.openMocks(this);
 
         productInfoEntityList.add(new ProductInfoEntity("16374", ProductTypeEnum.KLASS, "스마트스토어로 월 100만원 만들기, 평범한 사람이 돈을 만드는 비법", BigDecimal.valueOf(151950), BigDecimal.valueOf(99999)));
         productInfoEntityList.add(new ProductInfoEntity("26825", ProductTypeEnum.KLASS, "해금, 특별하고 아름다운 나만의 반려악기", BigDecimal.valueOf(114500), BigDecimal.valueOf(99999)));
@@ -56,7 +67,6 @@ class HandleProductInfoServiceTests {
 
     }
 
-    // TODO : 테스트코드 확인 필요 ... (어째서인지 community 버전에서 제대로 안돌아감 ㅠㅠ...??)
     @Test
     void saveProductInfoEntityList() {
 

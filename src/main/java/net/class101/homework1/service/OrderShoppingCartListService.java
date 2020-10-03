@@ -24,13 +24,16 @@ public class OrderShoppingCartListService {
 
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean checkOrderPossible(ShoppingCartVO shoppingCartVO) {
+    public boolean checkOrderPossible(ShoppingCartVO shoppingCartVO) throws SoldOutException {
 
         String productNumber = shoppingCartVO.getProductNumber();
 
         Optional<ProductInfoEntity> byProductNumber = productInfoRepository.findByProductNumber(productNumber);
 
-        byProductNumber.ifPresent(productInfoEntity -> {
+        if(byProductNumber.isPresent()) {
+
+            ProductInfoEntity productInfoEntity = byProductNumber.get();
+
             int productStock = productInfoEntity.getProductStock().intValue();
             int orderStock = shoppingCartVO.getOrderCount();
 
@@ -45,9 +48,12 @@ public class OrderShoppingCartListService {
                 // 키트 상품인 경우 재고 차감 후 update 처리 (클래스는 무제한이라 가정함)
                 updateProductStockInfo(productNumber, productInfoEntity, orderStock);
             }
-        });
+            return true;
 
-        return true;
+        } else {
+            return false;
+        }
+
     }
 
     // 키트 상품인 경우 재고 차감 후 update 처리
