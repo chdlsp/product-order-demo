@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="070e9a39-f983-4db3-8088-8c7488e1c87f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/class101/homework1/config/AsyncConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/class101/homework1/service/OrderShoppingCartListService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/class101/homework1/service/OrderShoppingCartListService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/net/class101/homework1/service/OrderShoppingCartListServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/net/class101/homework1/service/OrderShoppingCartListServiceTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +111,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.OrderShoppingCartListServiceTests.updateProductStockInfo">
+  <component name="RunManager" selected="Spring Boot.Homework1Application">
     <configuration name="Class101RunnerTests.findAllFromRepository" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="homework1.test" />
       <extension name="coverage">
@@ -221,7 +219,7 @@
       <option name="presentableId" value="Default" />
       <updated>1601200154189</updated>
       <workItem from="1601200159448" duration="11454000" />
-      <workItem from="1601642793244" duration="30697000" />
+      <workItem from="1601642793244" duration="30870000" />
     </task>
     <servers />
   </component>

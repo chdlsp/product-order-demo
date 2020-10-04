@@ -43,7 +43,7 @@ class OrderShoppingCartListServiceTests {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    void updateProductStockInfo() throws InterruptedException {
+    void updateProductStockInfo() {
 
         // given
         String productNumber = "58395";

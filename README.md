@@ -13,6 +13,9 @@
 - 상품 데이터 불러오기는 프로그램 구동 시 초기화
 - 프로덕트 클래스 정보가 변경되어 장바구니에 담은 정보와 다른 경우 예외처리
 - Kit 상품 구매 시 수량 update 처리는 Isolation.SERIALIZABLE 처리
+- 물건 주문 로직 비동기 처리 (@Async)
+- SoldOutException 테스트 구현 // exception.expect(SoldOutException.class);
+
 
 ### 기능 구현 내용
 - 한 번에 여러개의 상품을 같이 주문할 수 있다.
