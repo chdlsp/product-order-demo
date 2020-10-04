@@ -30,6 +30,9 @@
 - 주문이 완료 되었을 경우(space + ENTER) 주문 내역과 주문 금액, 결제 금액 (배송비 포함) 을 화면에 출력
 - 'q'를 입력하면 프로그램이 종료 됨
 
+### 제약 사항 추가 내용
+- 키트 상품인 경우 재고 차감 후, 클래스는 재고 차감 않음(무제한)
+
 ### Git Commit Template
 - reference : https://jeong-pro.tistory.com/207
 ```

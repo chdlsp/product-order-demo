@@ -1,20 +1,28 @@
 package net.class101.homework1.service;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.class101.homework1.domain.entity.ProductInfoEntity;
 import net.class101.homework1.domain.enums.ProductTypeEnum;
 import net.class101.homework1.domain.repository.ProductInfoRepository;
 import net.class101.homework1.domain.vo.ShoppingCartVO;
 import net.class101.homework1.exception.SoldOutException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 @Transactional
+@Slf4j
 public class OrderShoppingCartListService {
+
+    @Setter
+    CountDownLatch countDownLatch;
 
     private final ProductInfoRepository productInfoRepository;
 
@@ -23,7 +31,8 @@ public class OrderShoppingCartListService {
     }
 
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Async
     public boolean checkOrderPossible(ShoppingCartVO shoppingCartVO) throws SoldOutException {
 
         String productNumber = shoppingCartVO.getProductNumber();
@@ -57,7 +66,10 @@ public class OrderShoppingCartListService {
     }
 
     // 키트 상품인 경우 재고 차감 후 update 처리
-    private void updateProductStockInfo(String productNumber, ProductInfoEntity productInfoEntity, int orderStock) {
+    public void updateProductStockInfo(String productNumber, ProductInfoEntity productInfoEntity, int orderStock) {
+
+        log.info("checkOrderPossible : " + countDownLatch.getCount());
+
         ProductInfoEntity updateProductInfoEntity = ProductInfoEntity.builder()
                 .productNumber(productNumber)
                 .productName(productInfoEntity.getProductName())
