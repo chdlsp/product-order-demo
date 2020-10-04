@@ -12,8 +12,7 @@
 - ApplicationRunner 를 이용해 CommandLine 형태의 프로그램 작성
 - 상품 데이터 불러오기는 프로그램 구동 시 초기화
 - 프로덕트 클래스 정보가 변경되어 장바구니에 담은 정보와 다른 경우 예외처리
-- Kit 상품 구매 시 수량 update 처리는 Isolation.SERIALIZABLE 처리
-- 물건 주문 로직 비동기 처리 (@Async)
+- Kit 상품 구매 시 수량 update 처리 시 Isolation.SERIALIZABLE 처리
 - SoldOutException 테스트 구현 // exception.expect(SoldOutException.class);
 
 

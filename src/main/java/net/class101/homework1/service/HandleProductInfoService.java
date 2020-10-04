@@ -23,7 +23,7 @@ public class HandleProductInfoService {
     }
 
     // 전체 목록 저장 (Runner)
-    public List<ProductInfoEntity> saveProductInfoEntityList(List<ProductInfoEntity> productInfoEntityList) {
+    public void saveProductInfoEntityList(List<ProductInfoEntity> productInfoEntityList) {
 
         productInfoEntityList.forEach(productInfoEntity -> productInfoRepository.save(
                 ProductInfoEntity.builder()
@@ -33,8 +33,6 @@ public class HandleProductInfoService {
                         .productPrice(productInfoEntity.getProductPrice())
                         .productStock(productInfoEntity.getProductStock())
                         .build()));
-
-        return productInfoEntityList;
     }
 
     // productNumber 로 객체 찾기
@@ -55,4 +53,10 @@ public class HandleProductInfoService {
         }
     }
 
+    public List<ProductInfoEntity> getProductInfoLists() {
+
+        List<ProductInfoEntity> repositoryAll = productInfoRepository.findAll();
+
+        return repositoryAll;
+    }
 }

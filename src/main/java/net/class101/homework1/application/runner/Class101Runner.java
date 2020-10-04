@@ -63,7 +63,7 @@ public class Class101Runner implements ApplicationRunner {
         productInfoEntityList.add(new ProductInfoEntity("28448", ProductTypeEnum.KLASS, "당신도 할 수 있다! 베테랑 실무자가 알려주는 모션그래픽의 모든 것", BigDecimal.valueOf(52200), BigDecimal.valueOf(99999)));
 
         // db 저장 처리
-        List<ProductInfoEntity> productInfoEntities = handleProductInfoService.saveProductInfoEntityList(productInfoEntityList);
+        handleProductInfoService.saveProductInfoEntityList(productInfoEntityList);
 
         Scanner scanner = new Scanner(System.in);
         String next;
@@ -78,13 +78,14 @@ public class Class101Runner implements ApplicationRunner {
 
                 String productNumber; // product Number
                 String orderCount; // 주문 수량
+                List<ProductInfoEntity> productInfoList = handleProductInfoService.getProductInfoLists();
 
-                for (int i = 0; i < productInfoEntities.size(); i++) {
+                for (int i = 0; i < productInfoList.size(); i++) {
 
                     if (i == 0) {
                         System.out.print("상품번호    판매가격    재고수    상품명\n");
                     }
-                    ProductInfoEntity productInfoEntity = productInfoEntities.get(i);
+                    ProductInfoEntity productInfoEntity = productInfoList.get(i);
 
                     System.out.printf("%8s  %8d  %8d   %-50s \n"
                             , productInfoEntity.getProductNumber()
@@ -102,6 +103,11 @@ public class Class101Runner implements ApplicationRunner {
 
                     if (productNumber.equals(" ")) {
                         // 주문 완료
+
+                        if(shoppingCartList.size() == 0) {
+                            System.out.println("상품번호를 입력해 주세요.");
+                            break;
+                        }
 
                         BigDecimal transferFee = BigDecimal.valueOf(5000); // 배송비
                         BigDecimal orderAmount = BigDecimal.ZERO; // 주문금액
@@ -139,7 +145,10 @@ public class Class101Runner implements ApplicationRunner {
                                 handleProductInfoService.checkLatestProductPriceInfo(shoppingCartVO, productInfoEntity);
 
                                 // 결제금액 합산
-                                orderAmount = orderAmount.add(shoppingCartVO.getOrderPrice());
+                                int orderPriceVal = shoppingCartVO.getOrderPrice().intValue();
+                                int orderCountVal = shoppingCartVO.getOrderCount();
+
+                                orderAmount = orderAmount.add(BigDecimal.valueOf(orderPriceVal * orderCountVal));
 
                                 // 5만원 이상인 경우 배송비 0원 처리
                                 if(orderAmount.compareTo(BigDecimal.valueOf(50000)) > 0) {
@@ -148,12 +157,12 @@ public class Class101Runner implements ApplicationRunner {
                             }
                         }
                         System.out.println("---------------------------------------");
-                        System.out.printf("주문금액 : %d\n", orderAmount.intValue());
+                        System.out.printf("주문금액 : %,d원\n", orderAmount.intValue());
                         if(transferFee.compareTo(BigDecimal.valueOf(0)) > 0) {
-                            System.out.printf("배송금액 : %d\n", transferFee.intValue());
+                            System.out.printf("배송금액 : %,d원\n", transferFee.intValue());
                         }
                         System.out.println("---------------------------------------");
-                        System.out.printf("지불금액 : %d\n", orderAmount.add(transferFee).intValue());
+                        System.out.printf("지불금액 : %,d원\n", orderAmount.add(transferFee).intValue());
                         System.out.println("---------------------------------------");
 
                         break;
@@ -162,15 +171,17 @@ public class Class101Runner implements ApplicationRunner {
                         // 주문 계속
 
                         // productNumber 정보 가져오기
+                        String trimProductNumber = productNumber.trim();
+
                         ProductInfoEntity productInfoEntityByProductNumber =
-                                handleProductInfoService.findProductInfoEntityByProductNumber(productNumber);
+                                handleProductInfoService.findProductInfoEntityByProductNumber(trimProductNumber);
 
                         // 클래스 기존재 여부 확인
                         handleShoppingCartInfoService.checkClassIsAlreadyExists(shoppingCartList, productInfoEntityByProductNumber);
 
                         System.out.print("수량: ");
                         orderCount = scanner.nextLine();
-                        int intOrderCount = Integer.parseInt(orderCount);
+                        int intOrderCount = Integer.parseInt(orderCount.trim());
 
                         // 클래스 Type 수량을 1개로 입력 여부
                         boolean checkClassOrderValid =
@@ -179,7 +190,7 @@ public class Class101Runner implements ApplicationRunner {
                         if (checkClassOrderValid) {
                             // 쇼핑카트에 주문내역 적재
                             ShoppingCartVO shoppingCartVO = ShoppingCartVO.builder()
-                                    .productNumber(productNumber)
+                                    .productNumber(trimProductNumber)
                                     .productTypeEnum(productInfoEntityByProductNumber.getProductTypeEnum())
                                     .orderCount(intOrderCount)
                                     .productName(productInfoEntityByProductNumber.getProductName())

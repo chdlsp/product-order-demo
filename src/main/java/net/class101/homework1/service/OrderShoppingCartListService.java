@@ -30,9 +30,7 @@ public class OrderShoppingCartListService {
         this.productInfoRepository = productInfoRepository;
     }
 
-
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    @Async
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean checkOrderPossible(ShoppingCartVO shoppingCartVO) throws SoldOutException {
 
         String productNumber = shoppingCartVO.getProductNumber();
@@ -67,8 +65,6 @@ public class OrderShoppingCartListService {
 
     // 키트 상품인 경우 재고 차감 후 update 처리
     public void updateProductStockInfo(String productNumber, ProductInfoEntity productInfoEntity, int orderStock) {
-
-        log.info("checkOrderPossible : " + countDownLatch.getCount());
 
         ProductInfoEntity updateProductInfoEntity = ProductInfoEntity.builder()
                 .productNumber(productNumber)
